@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <omp.h>
 #include "mpi.h"
 
 #define N 1000
@@ -31,9 +32,9 @@ void compare_sequential(int *res1, int *res2) {
 }
 
 int main(int argc, char *argv[] ) {
-   int numprocs, rank, chunk_size, i, j, k;
+   int numprocs, rank, chunk_size, i, j;
    int *A, *B, *local_matrix, *result, *global_result, *seq_result;
-   clock_t start, end;
+   double timeStart, timeFinish;
 
    MPI_Init(&argc, &argv);
    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -55,28 +56,31 @@ int main(int argc, char *argv[] ) {
             *(B + i*N + j) = i+j;
          }
       }
-      start = clock();
+      timeStart=omp_get_wtime();
    }
 
    MPI_Bcast(B, N*N, MPI_INT, 0 , MPI_COMM_WORLD);
    MPI_Scatter(A, N*chunk_size, MPI_INT, local_matrix, N*chunk_size, MPI_INT, 0, MPI_COMM_WORLD);
-   
-   for(i=0; i<chunk_size; i++) {
-      for(j=0; j<N; j++) {
-         *(result + i*N + j) = 0;
-         for (k=0; k<N; k++) {
-            *(result + i*N + j) += *(local_matrix + i*N + k)* *(B + k*N + j);
+
+   #pragma omp parallel for collapse(2)
+      for(int i=0; i<chunk_size; i++) {
+         for(int j=0; j<N; j++) {
+            int temp = 0;
+            for (int k=0; k<N; k++) {
+               temp += *(local_matrix + i*N + k)* *(B + k*N + j);
+            }
+            *(result + i*N + j) = temp;
          }
-      }
    }
+
 
    MPI_Gather(result, N*chunk_size, MPI_INT, global_result, N*chunk_size, MPI_INT, 0, MPI_COMM_WORLD);
 
    if (rank == 0) {
-      end = clock();
+      timeFinish=omp_get_wtime();
       sequential_mult(A, B, seq_result);
       compare_sequential(seq_result, global_result);
-      printf("total time: %.2f seconds\n", ((double)end-start)/CLOCKS_PER_SEC);
+      printf("total time: %.2f seconds\n", (timeFinish-timeStart));
    }
 
    MPI_Finalize();

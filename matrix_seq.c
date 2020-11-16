@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define N 800
+#define N 1000
 
 int main(int argc, char *argv[] ) {
    int i, j, k;

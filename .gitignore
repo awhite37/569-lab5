@@ -1,4 +1,7 @@
 .DS_Store
 mpi
 seq
-
+openMP
+opemMP.dSYM
+seq.dSYM
+mpi.dSYM

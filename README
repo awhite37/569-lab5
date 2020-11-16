@@ -1,7 +1,23 @@
-to compile mpi: mpicc -g -Wall -o mpi matrix_mpi.c 
+to run all implementations:
 
-to run mpi: mpiexec -n 4 ./mpi
+bash run
+
+
+to run one at a time:
+
 
 to compile sequential: gcc -g -Wall -o seq matrix_seq.c 
 
 to run sequential: ./seq
+
+to compile mpi: mpicc -g -Wall -o mpi matrix_mpi.c 
+
+to run mpi: mpiexec -n 10 ./mpi
+
+to compile openMP: gcc -g -Wall -std=c99 -fopenmp -o3 -o openMP matrix_MP.c
+
+to run openMP: ./opeNMP
+
+to compile opemMP + mpi: mpicc -g -Wall -std=c99 -fopenmp -o3 -o mpiMP matrix_mpiMP.c
+
+to run openMP + mpi: mpiexec -n 10 ./mpiMP
