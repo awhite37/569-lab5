@@ -1,0 +1,29 @@
+some timing results (run on PSC bridges with 5000x5000 matrices, -n 10 for mpi implementations)
+
+sequential:
+1317.62 seconds
+1396.76 seconds
+1389.92 seconds
+1368.31 seconds
+1392.37 seconds
+
+mpi:
+147.53 seconds
+144.39 seconds
+143.72 seconds
+147.34 seconds
+144.72 seconds
+
+openMP:
+36.73 seconds
+33.85 seconds
+36.33 seconds
+34.94 seconds
+37.48 seconds
+
+openMP+mpi:
+51.88 seconds
+51.81 seconds
+52.17 seconds
+53.58 seconds
+52.99 seconds
