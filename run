@@ -4,6 +4,7 @@ gcc -g -Wall -o seq matrix_seq.c
 mpicc -g -Wall -o mpi matrix_mpi.c
 gcc -g -Wall -std=c99 -fopenmp -o3 -o openMP matrix_MP.c
 mpicc -g -Wall -std=c99 -fopenmp -o3 -o mpiMP matrix_mpiMP.c
+mpicc -g -Wall -std=c99 -fopenmp -o3 -o blocks matrix_blocks.c -lm
 echo "running sequential..."
 ./seq
 echo "running mpi..."
@@ -12,3 +13,5 @@ echo "running openMP..."
 ./openMP
 echo "running openMP + mpi..."
 mpiexec -n 10 ./mpiMP
+echo "running block implementation..."
+mpiexec -n 9 ./blocks

@@ -1,4 +1,4 @@
-some timing results (run on PSC bridges with 5000x5000 matrices, -n 10 for mpi implementations)
+some timing results (run on PSC bridges with 5000x5000 matrices, -n 10 for mpi implementations, 5001x5001 and -n 9 for block implementation for square blocks, results verified against sequential computation)
 
 sequential:
 1317.62 seconds
@@ -27,3 +27,11 @@ openMP+mpi:
 52.17 seconds
 53.58 seconds
 52.99 seconds
+
+block implementation:
+63.83 seconds
+62.90 seconds
+63.05 seconds
+63.55 seconds
+62.97 seconds
+

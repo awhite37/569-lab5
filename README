@@ -21,3 +21,7 @@ to run openMP: ./opeNMP
 to compile opemMP + mpi: mpicc -g -Wall -std=c99 -fopenmp -o3 -o mpiMP matrix_mpiMP.c
 
 to run openMP + mpi: mpiexec -n 10 ./mpiMP
+
+to compile block implementation: mpicc -g -Wall -std=c99 -fopenmp -o3 -o blocks matrix_blocks.c -lm
+
+to run block implementation: mpiexec -n 9 ./blocks

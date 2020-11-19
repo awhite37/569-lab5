@@ -5,3 +5,5 @@ openMP
 openMP.dSYM
 seq.dSYM
 mpi.dSYM
+blocks
+blocks.dSYM
