@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
    int numprocs, rank, next, prev, pivot;
    int *A, *B, *global_result, *seq_result;
    int *localA, *localB, *local_result, *tempA;
-   double timeStart, timeFinish;
+   double start, end;
    MPI_Status Status;
    MPI_Init(&argc, &argv);
    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
             *(B + i*N + j) = i+j;
          }
       }
-      timeStart=omp_get_wtime();
+      start = MPI_Wtime();
    }
 
    //divide matrix A blocks
@@ -147,11 +147,15 @@ int main(int argc, char* argv[]) {
    }
 
    if (rank == 0) {
-      timeFinish=omp_get_wtime();
-      sequential_mult(A, B, seq_result);
-      compare_sequential(seq_result, global_result);
-      printf("total time: %.2f seconds\n", (timeFinish-timeStart));
+      //sequential_mult(A, B, seq_result);
+      //compare_sequential(seq_result, global_result);
    }
-   
+
+   MPI_Barrier(MPI_COMM_WORLD);
+   end = MPI_Wtime() - start;
    MPI_Finalize();
+   if (rank == 0) { 
+    printf("total time: %.2f seconds\n", end);
+   }
+   return 0;
 } 

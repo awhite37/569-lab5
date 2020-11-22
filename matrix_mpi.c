@@ -3,7 +3,7 @@
 #include <time.h>
 #include "mpi.h"
 
-#define N 1000
+#define N 5000
 
 void sequential_mult(int *A, int *B, int *result) {
    int i,j,k;
@@ -33,7 +33,7 @@ void compare_sequential(int *res1, int *res2) {
 int main(int argc, char *argv[] ) {
    int numprocs, rank, chunk_size, i, j, k;
    int *A, *B, *local_matrix, *result, *global_result, *seq_result;
-   clock_t start, end;
+   double start, end;
 
    MPI_Init(&argc, &argv);
    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -55,7 +55,7 @@ int main(int argc, char *argv[] ) {
             *(B + i*N + j) = i+j;
          }
       }
-      start = clock();
+      start = MPI_Wtime();
    }
 
    MPI_Bcast(B, N*N, MPI_INT, 0 , MPI_COMM_WORLD);
@@ -73,13 +73,16 @@ int main(int argc, char *argv[] ) {
    MPI_Gather(result, N*chunk_size, MPI_INT, global_result, N*chunk_size, MPI_INT, 0, MPI_COMM_WORLD);
 
    if (rank == 0) {
-      end = clock();
-      sequential_mult(A, B, seq_result);
-      compare_sequential(seq_result, global_result);
-      printf("total time: %.2f seconds\n", ((double)end-start)/CLOCKS_PER_SEC);
+      //sequential_mult(A, B, seq_result);
+      //compare_sequential(seq_result, global_result);
    }
 
+   MPI_Barrier(MPI_COMM_WORLD);
+   end = MPI_Wtime() - start;
    MPI_Finalize();
+   if (rank == 0) { 
+    printf("total time: %.2f seconds\n", end);
+   }
    return 0;
 } 
 

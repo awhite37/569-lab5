@@ -3,7 +3,7 @@
 #include <time.h>
 #include <omp.h>
 
-#define N 1000
+#define N 5000
 
 void sequential_mult(int *A, int *B, int *result) {
    int i,j,k;
@@ -60,8 +60,8 @@ int main(int argc, char *argv[] ) {
       }
 
    timeFinish=omp_get_wtime();
-   sequential_mult(A, B, seq_result);
-   compare_sequential(seq_result, result);
+   //sequential_mult(A, B, seq_result);
+   //compare_sequential(seq_result, result);
    printf("total time: %.2f seconds\n", (timeFinish-timeStart));
 
 
